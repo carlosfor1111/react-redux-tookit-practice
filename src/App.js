@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getPhotos } from "./redux/galleryState";
+import AddTodo from "./components/AddTodo";
+import TodoList from "./components/TodoList";
+import "./App.css";
 
 function App() {
+  const dispatch = useDispatch();
+  const photos = useSelector((state) => state.gallery.photos);
+
+  useEffect(() => {
+    dispatch(getPhotos());
+  }, [dispatch]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>PHOTO GALLERY</h1>
+      <p>This ia a photo gallery made using redux toolkit and redux thunk.</p>
+      <hr />
+      <div className="Gallery">
+        {photos.map((photo) => (
+          <img
+            key={photo.id}
+            alt={photo.author}
+            src={photo.download_url}
+            width="400"
+            height="400"
+          />
+        ))}
+      </div>
+      <button>VIEW MORE</button>
+
+      <AddTodo />
+      <TodoList />
     </div>
   );
 }
